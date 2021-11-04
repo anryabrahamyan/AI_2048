@@ -17,25 +17,30 @@ class GAME:
         for i in range(self.game_size):
             self.mat.append([0] * self.game_size)
 
+        self.add_new_2()
+
+        for i, row in enumerate(self.mat):
+            print(self.mat[i])
         print("Commands are as follows : ")
         print("'W' or 'w' : Move Up")
         print("'S' or 's' : Move Down")
         print("'A' or 'a' : Move Left")
         print("'D' or 'd' : Move Right")
 
-        self.add_new_2()
-
     def add_new_2(self):
-        r = random.randint(0, self.game_size - 1)
-        c = random.randint(0, self.game_size - 1)
+        allowed_combinations = [(i, j) for i in range(self.game_size) for j in range(self.game_size)]
+        random.shuffle(allowed_combinations)
+        try:
+            r, c = random.choice(allowed_combinations)
+            allowed_combinations.remove((r, c))
 
-        while self.mat[r][c] != 0:
-            r = random.randint(0, self.game_size - 1)
-            c = random.randint(0, self.game_size - 1)
+            while self.mat[r][c] != 0:
+                r, c = random.choice(allowed_combinations)
+                allowed_combinations.remove((r, c))
 
-            # TODO fix infinite loop case
-
-        self.mat[r][c] = 2
+            self.mat[r][c] = 2
+        except:
+            pass
 
     def get_current_state(self):
         for i in range(self.game_size):
