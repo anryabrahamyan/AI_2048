@@ -1,9 +1,16 @@
+# base from https://www.geeksforgeeks.org/2048-game-in-python/
+
 import random
 
+CONTINUE = 'GAME NOT OVER'
+WON = 'WON'
+LOSS = 'LOST'
 
-class game:
+
+class GAME:
     def __init__(self, size=4):
         self.game_size = size
+        self.mat = []
 
     def start_game(self):
         self.mat = []
@@ -22,7 +29,7 @@ class game:
         r = random.randint(0, self.game_size - 1)
         c = random.randint(0, self.game_size - 1)
 
-        while (self.mat[r][c] != 0):
+        while self.mat[r][c] != 0:
             r = random.randint(0, self.game_size - 1)
             c = random.randint(0, self.game_size - 1)
 
@@ -33,29 +40,29 @@ class game:
     def get_current_state(self):
         for i in range(self.game_size):
             for j in range(self.game_size):
-                if (self.mat[i][j] == 2048):
-                    return 'WON'
+                if self.mat[i][j] == 2048:
+                    return WON
 
         for i in range(self.game_size):
             for j in range(self.game_size):
-                if (self.mat[i][j] == 0):
-                    return 'GAME NOT OVER'
+                if self.mat[i][j] == 0:
+                    return CONTINUE
 
         for i in range(self.game_size - 1):
             for j in range(self.game_size - 1):
-                if (self.mat[i][j] == self.mat[i + 1][j] or self.mat[i][j] == self.mat[i][j + 1]):
-                    return 'GAME NOT OVER'
+                if self.mat[i][j] == self.mat[i + 1][j] or self.mat[i][j] == self.mat[i][j + 1]:
+                    return CONTINUE
 
         for j in range(self.game_size - 1):
-            if (self.mat[self.game_size - 1][j] == self.mat[self.game_size - 1][j + 1]):
-                return 'GAME NOT OVER'
+            if self.mat[self.game_size - 1][j] == self.mat[self.game_size - 1][j + 1]:
+                return CONTINUE
 
         for i in range(self.game_size - 1):
-            if (self.mat[i][self.game_size - 1] == self.mat[i + 1][self.game_size - 1]):
-                return 'GAME NOT OVER'
+            if self.mat[i][self.game_size - 1] == self.mat[i + 1][self.game_size - 1]:
+                return CONTINUE
 
         # else we have lost the game
-        return 'LOST'
+        return LOSS
 
     def compress(self):
         # bool variable to determine
@@ -79,7 +86,7 @@ class game:
             # loop to traverse each column
             # in respective row
             for j in range(self.game_size):
-                if (self.mat[i][j] != 0):
+                if self.mat[i][j] != 0:
 
                     # if cell is non empty then
                     # we will shift it's number to
@@ -87,7 +94,7 @@ class game:
                     # denoted by pos variable
                     new_mat[i][pos] = self.mat[i][j]
 
-                    if (j != pos):
+                    if j != pos:
                         changed = True
                     pos += 1
 
@@ -104,7 +111,7 @@ class game:
                 # if current cell has same value as
                 # next cell in the row and they
                 # are non empty then
-                if (self.mat[i][j] == self.mat[i][j + 1] and self.mat[i][j] != 0):
+                if self.mat[i][j] == self.mat[i][j + 1] and self.mat[i][j] != 0:
                     # double current cell value and
                     # empty the next cell
                     self.mat[i][j] = self.mat[i][j] * 2
@@ -127,7 +134,7 @@ class game:
             for j in range(self.game_size):
                 new_mat[i].append(self.mat[i][self.game_size - 1 - j])
 
-        self.mat=new_mat
+        self.mat = new_mat
 
     # function to get the transpose
     # of matrix means interchanging
@@ -139,7 +146,7 @@ class game:
             for j in range(self.game_size):
                 new_mat[i].append(self.mat[j][i])
 
-        self.mat=new_mat
+        self.mat = new_mat
 
     # function to update the matrix
     # if we move / swipe left
@@ -188,7 +195,7 @@ class game:
 
         # again take transpose will give
         # desired results
-        new_grid = self.transpose()
+        self.transpose()
         return changed
 
     # function to update the matrix
