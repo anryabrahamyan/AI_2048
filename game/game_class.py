@@ -18,6 +18,7 @@ class GAME:
             self.mat.append([0] * self.game_size)
 
         self.add_new_2()
+        self.add_new_2()
 
         for i, row in enumerate(self.mat):
             print(self.mat[i])

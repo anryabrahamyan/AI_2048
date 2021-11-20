@@ -7,7 +7,8 @@ def start_game():
     game.start_game()
     return game
 
-def get_applicable_actions
+def get_applicable_actions():
+    game=start_game()
     while True:
 
         # taking the user input
