@@ -1,6 +1,9 @@
 # base from https://www.geeksforgeeks.org/2048-game-in-python/
-
+#TODO add score
+#TODO add random 4
 import random
+import numpy as np
+
 
 CONTINUE = 'GAME NOT OVER'
 WON = 'WON'
@@ -10,18 +13,13 @@ LOSS = 'LOST'
 class GAME:
     def __init__(self, size=4):
         self.game_size = size
-        self.mat = []
+        self.mat = np.zeros(shape=(size,size))
 
     def start_game(self):
-        self.mat = []
-        for i in range(self.game_size):
-            self.mat.append([0] * self.game_size)
-
         self.add_new_2()
         self.add_new_2()
 
-        for i, row in enumerate(self.mat):
-            print(self.mat[i])
+        print(self.mat)
         print("Commands are as follows : ")
         print("'W' or 'w' : Move Up")
         print("'S' or 's' : Move Down")
@@ -35,7 +33,7 @@ class GAME:
             r, c = random.choice(allowed_combinations)
             allowed_combinations.remove((r, c))
 
-            while self.mat[r][c] != 0:
+            while self.mat[r,c] != 0:
                 r, c = random.choice(allowed_combinations)
                 allowed_combinations.remove((r, c))
 
@@ -46,25 +44,25 @@ class GAME:
     def get_current_state(self):
         for i in range(self.game_size):
             for j in range(self.game_size):
-                if self.mat[i][j] == 2048:
+                if self.mat[i,j] == 2048:
                     return WON
 
         for i in range(self.game_size):
             for j in range(self.game_size):
-                if self.mat[i][j] == 0:
+                if self.mat[i,j] == 0:
                     return CONTINUE
 
         for i in range(self.game_size - 1):
             for j in range(self.game_size - 1):
-                if self.mat[i][j] == self.mat[i + 1][j] or self.mat[i][j] == self.mat[i][j + 1]:
+                if self.mat[i,j] == self.mat[i + 1,j] or self.mat[i,j] == self.mat[i,j + 1]:
                     return CONTINUE
 
         for j in range(self.game_size - 1):
-            if self.mat[self.game_size - 1][j] == self.mat[self.game_size - 1][j + 1]:
+            if self.mat[self.game_size - 1,j] == self.mat[self.game_size - 1,j + 1]:
                 return CONTINUE
 
         for i in range(self.game_size - 1):
-            if self.mat[i][self.game_size - 1] == self.mat[i + 1][self.game_size - 1]:
+            if self.mat[i,self.game_size - 1] == self.mat[i + 1,self.game_size - 1]:
                 return CONTINUE
 
         # else we have lost the game
@@ -76,11 +74,7 @@ class GAME:
         changed = False
 
         # empty grid
-        new_mat = []
-
-        # with all cells empty
-        for i in range(self.game_size):
-            new_mat.append([0] * self.game_size)
+        new_mat = np.zeros(shape=(self.game_size,self.game_size))
 
         # here we will shift entries
         # of each cell to it's extreme
@@ -92,13 +86,13 @@ class GAME:
             # loop to traverse each column
             # in respective row
             for j in range(self.game_size):
-                if self.mat[i][j] != 0:
+                if self.mat[i,j] != 0:
 
                     # if cell is non empty then
                     # we will shift it's number to
                     # previous empty cell in that row
                     # denoted by pos variable
-                    new_mat[i][pos] = self.mat[i][j]
+                    new_mat[i,pos] = self.mat[i,j]
 
                     if j != pos:
                         changed = True
@@ -117,11 +111,11 @@ class GAME:
                 # if current cell has same value as
                 # next cell in the row and they
                 # are non empty then
-                if self.mat[i][j] == self.mat[i][j + 1] and self.mat[i][j] != 0:
+                if self.mat[i,j] == self.mat[i,j + 1] and self.mat[i,j] != 0:
                     # double current cell value and
                     # empty the next cell
-                    self.mat[i][j] = self.mat[i][j] * 2
-                    self.mat[i][j + 1] = 0
+                    self.mat[i,j] = self.mat[i,j] * 2
+                    self.mat[i,j + 1] = 0
 
                     # make bool variable True indicating
                     # the new grid after merging is
@@ -134,11 +128,11 @@ class GAME:
     # means reversing the content of
     # each row (reversing the sequence)
     def reverse(self):
-        new_mat = []
+        new_mat = np.zeros(shape=(self.game_size,self.game_size))
         for i in range(self.game_size):
-            new_mat.append([])
             for j in range(self.game_size):
-                new_mat[i].append(self.mat[i][self.game_size - 1 - j])
+                new_mat[i,j] = self.mat[i,self.game_size-1-j]
+                #new_mat[i].append(self.mat[i][self.game_size - 1 - j])
 
         self.mat = new_mat
 
@@ -146,13 +140,15 @@ class GAME:
     # of matrix means interchanging
     # rows and column
     def transpose(self):
-        new_mat = []
-        for i in range(self.game_size):
-            new_mat.append([])
-            for j in range(self.game_size):
-                new_mat[i].append(self.mat[j][i])
-
-        self.mat = new_mat
+        self.mat=self.mat.T
+    # def transpose(self):
+    #     new_mat = []
+    #     for i in range(self.game_size):
+    #         new_mat.append([])
+    #         for j in range(self.game_size):
+    #             new_mat[i].append(self.mat[j][i])
+    #
+    #     self.mat = new_mat
 
     # function to update the matrix
     # if we move / swipe left
