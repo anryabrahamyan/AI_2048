@@ -43,3 +43,5 @@ class Heuristic:
 
 a=np.array([[0,1,3,2],[0,0,0,0],[0,0,0,0],[0,0,0,0]])
 print(Heuristic.monoton(a))
+
+#asds
