@@ -21,6 +21,7 @@ def play_game():
             # get the current state and print it
             status = game.get_current_state()
             print(status)
+            print(game.score)
 
             # if game not ove then continue
             # and add a new two
@@ -43,6 +44,7 @@ def play_game():
             flag = game.move_down()
             status = game.get_current_state()
             print(status)
+            print(game.score)
             if status == CONTINUE:
                 game.add_new_2()
 
@@ -57,6 +59,7 @@ def play_game():
             flag = game.move_left()
             status = game.get_current_state()
             print(status)
+            print(game.score)
             if status == CONTINUE:
                 game.add_new_2()
 
@@ -71,6 +74,7 @@ def play_game():
             flag = game.move_right()
             status = game.get_current_state()
             print(status)
+            print(game.score)
             if status == CONTINUE:
                 game.add_new_2()
 
