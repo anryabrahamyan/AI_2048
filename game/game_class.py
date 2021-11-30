@@ -9,9 +9,13 @@ LOSS = 'LOST'
 
 
 class GAME:
-    def __init__(self, size=4):
-        self.game_size = size
-        self.mat = np.zeros(shape=(size, size))
+    def __init__(self, size=4,board=[]):
+        if len(board)!=0:
+            self.game_size=len(board)
+            self.mat=board
+        else:
+            self.game_size = size
+            self.mat = np.zeros(shape=(size, size))
         self.score = 0
 
     def start_game(self):
@@ -219,6 +223,29 @@ class GAME:
     # this file only contains all the logic
     # functions to be called in main function
     # present in the other file
+
+    def get_applicable_actions(self):
+        ''' returns board config as well'''
+
+        actions=[]
+
+        left_board=GAME(board=self.mat).move_left()
+        if left_board:
+            actions.append('left')
+
+        up_board=GAME(board=self.mat).move_up()
+        if up_board:
+            actions.append('up')
+
+        right_board=GAME(board=self.mat).move_right()
+        if right_board:
+            actions.append('right')
+
+        down_board = GAME(board=self.mat).move_down()
+        if down_board:
+            actions.append('down')
+
+        return actions
 
     if __name__ == 'main':
         start_game()
