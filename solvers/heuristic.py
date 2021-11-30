@@ -43,6 +43,13 @@ class Heuristic:
     def random(steps):
         return random.choice(steps)
 
+class weighted_heuristic:
+    def __init__(self,weights=np.array([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]])):
+        self.weights=weights
+
+    def __call__(self,matrix):
+        return np.sum(np.multiply(self.weights,matrix))
+
 if __name__=='__main__':
     a=np.array([[0,1,3,2],[0,0,0,0],[0,0,0,0],[0,0,0,0]])
     print(Heuristic.empty(a))
