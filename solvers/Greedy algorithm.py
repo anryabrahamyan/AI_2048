@@ -15,6 +15,28 @@ class Greedy:
             self.game.start_game()
         else:
             self.game = game
+    def solve(self):
+        while self.game.get_current_state() ==CONTINUE:
+            action=self.search_one_step()
+            if action==WON:
+                return action
+            if action == 'left':
+                self.game.move_left()
+
+            if action == 'right':
+                self.game.move_right()
+            if action == 'up':
+                self.game.move_up()
+            else:
+                self.game.move_down()
+
+            self.game.add_new_2()
+            print(self.game.mat,self.game.score)
+            print("=================================")
+
+        return self.game.mat,self.game.score
+
+
 
     def search_one_step(self):
         applicable_actions = self.game.get_applicable_actions()
@@ -34,7 +56,7 @@ class Greedy:
                 else:
                     new_board.move_down()
 
-                if new_board.get_current_state == 'WON' or new_board.get_current_state == 'LOSS':
+                if new_board.get_current_state == 'WON':
                     return new_board.get_current_state
 
                 step[action] = heuristic(new_board.mat)
@@ -63,4 +85,11 @@ class Greedy:
 
 if __name__ == '__main__':
     a = Greedy(heuristics=[heuristic.Heuristic.empty, heuristic.Heuristic.random])
-    print(a.search_one_step())
+    print(a.solve())
+
+    lst=[]
+    for i in range(1000):
+
+        b=Greedy(heuristics=[heuristic.Heuristic.empty, heuristic.Heuristic.random])
+        lst.append(b.solve())
+    print(np.mean(lst))
