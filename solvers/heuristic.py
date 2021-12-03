@@ -5,23 +5,23 @@ import random
 
 class Heuristic:
     @staticmethod
-    def greedy(score):
+    def greedy(board,score):
         return score
 
     @staticmethod
-    def empty(board):
+    def empty(board,sore):
         return np.where (board==0,1,0).sum()
 
 
     @staticmethod
-    def uniform(board):
+    def uniform(board,score):
         _,counts=np.unique(board,return_counts=True)
         return np.sum(np.power(counts[1:],3))
 
 
 
     @staticmethod
-    def monoton(board):
+    def monoton(board,score):
         best=-1
         for i in (1,board.shape[0]):
             current=0
@@ -47,7 +47,7 @@ class weighted_heuristic:
     def __init__(self,weights=np.array([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]])):
         self.weights=weights
 
-    def __call__(self,matrix):
+    def __call__(self,matrix,score):
         return np.sum(np.multiply(self.weights,matrix))
 
 if __name__=='__main__':
