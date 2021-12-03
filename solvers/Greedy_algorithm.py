@@ -83,5 +83,5 @@ if __name__ == '__main__':
     lst = []
     for i in tqdm(range(1000)):
         b = Greedy(heuristics=[heuristic.Heuristic.empty, heuristic.Heuristic.random])
-        lst.append(b.solve())
+        lst.append(b.solve()[1])
     print(np.mean(lst))
