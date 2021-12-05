@@ -1,5 +1,4 @@
 # base from https://www.geeksforgeeks.org/2048-game-in-python/
-# TODO add score
 import random
 import numpy as np
 
@@ -22,12 +21,12 @@ class GAME:
         self.add_new_2()
         self.add_new_2()
 
-        print(self.mat)
-        print("Commands are as follows : ")
-        print("'W' or 'w' : Move Up")
-        print("'S' or 's' : Move Down")
-        print("'A' or 'a' : Move Left")
-        print("'D' or 'd' : Move Right")
+        # print(self.mat)
+        # print("Commands are as follows : ")
+        # print("'W' or 'w' : Move Up")
+        # print("'S' or 's' : Move Down")
+        # print("'A' or 'a' : Move Left")
+        # print("'D' or 'd' : Move Right")
 
     def add_new_2(self):
         allowed_combinations = [(i, j) for i in range(self.game_size) for j in range(self.game_size)]
@@ -145,7 +144,6 @@ class GAME:
     # rows and column
     def transpose(self):
         self.mat = self.mat.T
-
     # def transpose(self):
     #     new_mat = []
     #     for i in range(self.game_size):
@@ -168,7 +166,6 @@ class GAME:
 
         # again compress after merging.
         temp = self.compress()
-
         # return new matrix and bool changed
         # telling whether the grid is same
         # or different

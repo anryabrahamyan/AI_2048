@@ -3,6 +3,7 @@ from game_class import *
 import game_class
 import heuristic
 
+
 class Greedy:
     def __init__(self, heuristics=[], game=None):
         self.heuristics = heuristics
@@ -15,6 +16,7 @@ class Greedy:
     def solve(self):
         while self.game.get_current_state() == CONTINUE:
             action = self.search_one_step()
+
             if action == WON:
                 return action
             if action == 'left':
@@ -26,7 +28,6 @@ class Greedy:
                 self.game.move_up()
             else:
                 self.game.move_down()
-
             self.game.add_new_2()
 
         return self.game.mat, self.game.score
@@ -79,9 +80,10 @@ class Greedy:
 
 if __name__ == '__main__':
     from tqdm import tqdm
-    a = Greedy(heuristics=[heuristic.Heuristic.empty, heuristic.Heuristic.random])
+    a = Greedy(heuristics=[heuristic.Heuristic.empty,heuristic.Heuristic.monoton, heuristic.Heuristic.random])
     lst = []
-    for i in tqdm(range(1000)):
+    for i in tqdm(range(100)):
         b = Greedy(heuristics=[heuristic.Heuristic.empty, heuristic.Heuristic.random])
         lst.append(b.solve()[1])
     print(np.mean(lst))
+    print(np.median(lst))

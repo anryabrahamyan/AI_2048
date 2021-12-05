@@ -9,19 +9,19 @@ class Heuristic:
         return score
 
     @staticmethod
-    def empty(board,sore):
+    def empty(board,sore=0):
         return np.where (board==0,1,0).sum()
 
 
     @staticmethod
-    def uniform(board,score):
+    def uniform(board,score=0):
         _,counts=np.unique(board,return_counts=True)
         return np.sum(np.power(counts[1:],3))
 
 
 
     @staticmethod
-    def monoton(board,score):
+    def monoton(board,score=0):
         best=-1
         for i in (1,board.shape[0]):
             current=0
@@ -47,7 +47,7 @@ class weighted_heuristic:
     def __init__(self,weights=np.array([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]])):
         self.weights=weights
 
-    def __call__(self,matrix,score):
+    def __call__(self,matrix,score=0):
         return np.sum(np.multiply(self.weights,matrix))
 
 if __name__=='__main__':
