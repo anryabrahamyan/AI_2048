@@ -44,10 +44,10 @@ class GAME:
             pass
 
     def get_current_state(self):
-        for i in range(self.game_size):
-            for j in range(self.game_size):
-                if self.mat[i, j] == 2048:
-                    return WON
+        # for i in range(self.game_size):
+        #     for j in range(self.game_size):
+        #         if self.mat[i, j] == 2048:
+        #             return WON
 
         for i in range(self.game_size):
             for j in range(self.game_size):

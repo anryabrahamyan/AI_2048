@@ -40,8 +40,8 @@ class Greedy:
         while same and i != len(self.heuristics) - 1:
             heuristic = self.heuristics[i]
             for action in step.keys():
-                new_board = GAME(board=self.game.mat)
-                new_board.score=self.game.score
+                new_board = GAME(board=self.game.mat,score=self.game.score)
+                # new_board.score=self.game.score
                 if action == 'left':
                     new_board.move_left()
                 if action == 'right':
@@ -59,9 +59,8 @@ class Greedy:
             i += 1
             if len(set(step.values())) == len(step.keys()):
                 return max(step, key=step.get)
-                same = False
             else:
-                step = {i: value for i, value in step.items() if value == max(step, key=step.get)}
+                step = {i: value for i, value in step.items() if i == max(step, key=step.get)}
         action = self.heuristics[i](applicable_actions)
         return action
 
@@ -80,10 +79,22 @@ class Greedy:
 
 if __name__ == '__main__':
     from tqdm import tqdm
-    a = Greedy(heuristics=[heuristic.Heuristic.empty,heuristic.Heuristic.monoton, heuristic.Heuristic.random])
-    lst = []
-    for i in tqdm(range(100)):
-        b = Greedy(heuristics=[heuristic.Heuristic.empty, heuristic.Heuristic.random])
-        lst.append(b.solve()[1])
-    print(np.mean(lst))
-    print(np.median(lst))
+    from itertools import combinations,permutations
+    import pandas as pd
+    total_df=pd.DataFrame({'Configuration':[],'mean':[],'median':[],'max':[],'all_values':[]})
+    heuristics=[heuristic.Heuristic.greedy,heuristic.Heuristic.empty,heuristic.Heuristic.uniform,heuristic.Heuristic.monoton,weighted_heuristic(np.array([[1,2,3,4],[8,7,6,5],[9,10,11,12],[16,15,14,13]]))]
+    combs=[]
+    for n in range(len(heuristics) + 1):
+        combs += list(combinations(heuristics, n))
+    permutation=[]
+    for config in combs:
+        permutation+=list(permutations(config))
+    permutation=[i+tuple([heuristic.Heuristic.random]) for i in permutation]
+    for perm in tqdm(permutation):
+        lst = []
+        for i in tqdm(range(300)):
+            b = Greedy(heuristics=perm)
+            lst.append(b.solve()[1])
+        experiment=pd.DataFrame({'Configuration':[perm],'mean':[np.mean(lst)],'median':[np.median(lst)],'max':[np.max(lst)],'all_values':[[lst]]})
+        total_df=pd.concat([total_df,experiment])
+    total_df.to_csv('Greedy_combination_scores.csv',index=False)

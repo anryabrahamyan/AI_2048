@@ -4,7 +4,7 @@ import game_class
 import heuristic
 
 class expectimax_solver:
-    def __init__(self, heuristic, game=None,depth=3):
+    def __init__(self, heuristic, game=None,depth=2):
         self.heuristic = heuristic
         if game is None:
             self.game = game_class.GAME()
@@ -33,9 +33,9 @@ class expectimax_solver:
         return self.game.mat, self.game.score
 
     def search_one_step(self):
-        copy=GAME(board=self.game.mat)
-        steps = {i: 0 for i in copy.get_applicable_actions()}
+        steps = {i: 0 for i in self.game.get_applicable_actions()}
         for action in steps.keys():
+            copy = GAME(board=self.game.mat)
             if action == 'left':
                 copy.move_left()
             if action == 'right':
@@ -84,7 +84,7 @@ if __name__=='__main__':
     lst=[]
     from tqdm import tqdm
     for i in tqdm(range(20)):
-        a=expectimax_solver(heuristic=heuristic.Heuristic.empty,depth=3)
+        a=expectimax_solver(heuristic=heuristic.Heuristic.empty,depth=2)
         lst.append(a.solve()[1])
     print(np.median(lst))
     print(np.mean(lst))
