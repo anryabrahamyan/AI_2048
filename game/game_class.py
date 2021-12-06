@@ -8,14 +8,14 @@ LOSS = 'LOST'
 
 
 class GAME:
-    def __init__(self, size=4,board=[]):
+    def __init__(self, size=4,board=[],score=0):
         if len(board)!=0:
             self.game_size=len(board)
             self.mat=board
         else:
             self.game_size = size
             self.mat = np.zeros(shape=(size, size))
-        self.score = 0
+        self.score = score
 
     def start_game(self):
         self.add_new_2()
