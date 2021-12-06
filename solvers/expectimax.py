@@ -16,8 +16,8 @@ class expectimax_solver:
     def solve(self):
         while self.game.get_current_state() == CONTINUE:
             action = self.search_one_step()
-            if action == WON:
-                return WON
+            # if action == WON:
+            #     return WON
             if action == 'left':
                 self.game.move_left()
 
@@ -51,7 +51,7 @@ class expectimax_solver:
     def max_value(self,game,depth):
         game=GAME(board=game.mat)
         if depth>2*self.depth:
-            return self.heuristic(game)
+            return self.heuristic(game.mat)
         steps={i:0 for i in game.get_applicable_actions()}
         if len(game.get_applicable_actions())==0:
             return 0
@@ -80,11 +80,11 @@ class expectimax_solver:
         return np.mean(list(empty_tiles.values()))
 
 if __name__=='__main__':
-    a=expectimax_solver(heuristic=Heuristic.empty,game=GAME(board=np.array([[2,0,0,0],[2,0,0,0],[0,0,0,0],[0,0,0,0]])))
+    # a=expectimax_solver(heuristic=heuristic.weighted_heuristic(np.array([[1,2,3,4],[8,7,6,5],[9,10,11,12],[16,15,14,13]])),game=GAME(board=np.array([[2,0,0,0],[2,0,0,0],[0,0,0,0],[0,0,0,0]])))
     lst=[]
     from tqdm import tqdm
-    for i in tqdm(range(30)):
-        a=expectimax_solver(heuristic=Heuristic.empty,depth=2)
+    for i in tqdm(range(20)):
+        a=expectimax_solver(heuristic=heuristic.Heuristic.empty,depth=3)
         lst.append(a.solve()[1])
     print(np.median(lst))
     print(np.mean(lst))

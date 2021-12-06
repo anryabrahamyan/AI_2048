@@ -17,8 +17,8 @@ class Greedy:
         while self.game.get_current_state() == CONTINUE:
             action = self.search_one_step()
 
-            if action == WON:
-                return action
+            # if action == WON:
+            #     return action
             if action == 'left':
                 self.game.move_left()
 
@@ -51,8 +51,8 @@ class Greedy:
                 else:
                     new_board.move_down()
 
-                if new_board.get_current_state == WON:
-                    return new_board.get_current_state
+                # if new_board.get_current_state == WON:
+                #     return new_board.get_current_state
 
                 step[action] = heuristic(new_board.mat,new_board.score)
 
