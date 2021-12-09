@@ -5,6 +5,12 @@ import heuristic
 
 class expectimax_solver:
     def __init__(self, heuristic, game=None,depth=2):
+        """Instantiates the solver
+           Inputs: heuristic: The heuristic to be used
+                   game: The game matrix to be used. If None, a random starting board is created
+                   depth: The depth of the generated search tree. Depth includes one step of the player and one generation from the environment.
+           Outputs: The game class that the solve method can be called on.
+           """
         self.heuristic = heuristic
         if game is None:
             self.game = game_class.GAME()
@@ -14,25 +20,26 @@ class expectimax_solver:
         self.depth=depth
 
     def solve(self):
+        """The method for solving the game
+           Outputs: The matrix of the final board and the final game score"""
         while self.game.get_current_state() == CONTINUE:
+            #takes the action found by search one step and applies it until the game state is LOSS
             action = self.search_one_step()
-            # if action == WON:
-            #     return WON
             if action == 'left':
                 self.game.move_left()
-
             if action == 'right':
                 self.game.move_right()
             if action == 'up':
                 self.game.move_up()
             elif action =='down':
                 self.game.move_down()
-            # print(self.game.mat)
-            self.game.add_new_2()#check add new 2
+            self.game.add_new_2()
 
         return self.game.mat, self.game.score
 
     def search_one_step(self):
+        """Searches one step for the current board by recursively calling the max or random_value functions
+           Outputs: a string representing the best step"""
         steps = {i: 0 for i in self.game.get_applicable_actions()}
         for action in steps.keys():
             copy = GAME(board=self.game.mat)
@@ -49,6 +56,7 @@ class expectimax_solver:
         return max(steps,key=steps.get)
 
     def max_value(self,game,depth):
+        """a function representing the player"""
         game=GAME(board=game.mat,score=game.score)
         if depth>2*self.depth:
             return self.heuristic(game.mat,game.score)
@@ -69,6 +77,7 @@ class expectimax_solver:
         return max(steps.values())
 
     def random_value(self,game,depth):
+        """a function representing the environment"""
         empty_=set([tuple(i) for i in np.argwhere(game.mat==0)])
         empty_tiles={i:0 for i in empty_}
         for tile in empty_tiles.keys():
