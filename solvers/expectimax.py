@@ -87,9 +87,10 @@ if __name__=='__main__':
     for depth in tqdm(range(1,5)):
         for heuristic in tqdm(heuristics):
             lst = []
-            for i in tqdm(range(150)):
+            for i in tqdm(range(30)):
                 b = expectimax_solver(heuristic=heuristic,depth=depth)
                 lst.append(b.solve()[1])
-            experiment=pd.DataFrame({'Configuration':[str(heuristics)+str(depth)],'mean':[np.mean(lst)],'median':[np.median(lst)],'max':[np.max(lst)],'all_values':[[lst]]})
+            experiment=pd.DataFrame({'Configuration':[str(heuristic)+' '+str(depth)],'mean':[np.mean(lst)],'median':[np.median(lst)],'max':[np.max(lst)],'all_values':[[lst]]})
             total_df=pd.concat([total_df,experiment])
         total_df.to_csv('Expectimax_combination_scores.csv',index=False)
+        print('saved')
