@@ -1,7 +1,8 @@
-# base from https://www.geeksforgeeks.org/2048-game-in-python/
+# based on the implementation from https://www.geeksforgeeks.org/2048-game-in-python/
 import random
 import numpy as np
 
+#Instantiate commonly used constants
 CONTINUE = 'GAME NOT OVER'
 WON = 'WON'
 LOSS = 'LOST'
@@ -21,13 +22,6 @@ class GAME:
         self.add_new_2()
         self.add_new_2()
 
-        # print(self.mat)
-        # print("Commands are as follows : ")
-        # print("'W' or 'w' : Move Up")
-        # print("'S' or 's' : Move Down")
-        # print("'A' or 'a' : Move Left")
-        # print("'D' or 'd' : Move Right")
-
     def add_new_2(self):
         allowed_combinations = [(i, j) for i in range(self.game_size) for j in range(self.game_size)]
         random.shuffle(allowed_combinations)
@@ -44,11 +38,6 @@ class GAME:
             pass
 
     def get_current_state(self):
-        # for i in range(self.game_size):
-        #     for j in range(self.game_size):
-        #         if self.mat[i, j] == 2048:
-        #             return WON
-
         for i in range(self.game_size):
             for j in range(self.game_size):
                 if self.mat[i, j] == 0:
@@ -67,7 +56,6 @@ class GAME:
             if self.mat[i, self.game_size - 1] == self.mat[i + 1, self.game_size - 1]:
                 return CONTINUE
 
-        # else we have lost the game
         return LOSS
 
     def compress(self):
@@ -105,6 +93,7 @@ class GAME:
         return changed
 
     def merge(self):
+        """merges the tiles horizontally"""
         changed = False
 
         for i in range(self.game_size):
@@ -131,6 +120,7 @@ class GAME:
     # means reversing the content of
     # each row (reversing the sequence)
     def reverse(self):
+        """reverse the board to perform other operations"""
         new_mat = np.zeros(shape=(self.game_size, self.game_size))
         for i in range(self.game_size):
             for j in range(self.game_size):
@@ -156,6 +146,7 @@ class GAME:
     # function to update the matrix
     # if we move / swipe left
     def move_left(self):
+        """The move left action is the main action that will be used in the other actions after transforming them for its effect to be equivalent"""
         # first compress the grid
         changed1 = self.compress()
 
@@ -222,7 +213,7 @@ class GAME:
     # present in the other file
 
     def get_applicable_actions(self):
-        ''' returns board config as well'''
+        '''Returns the set of applicable actions'''
 
         actions=[]
 
