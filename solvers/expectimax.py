@@ -49,9 +49,9 @@ class expectimax_solver:
         return max(steps,key=steps.get)
 
     def max_value(self,game,depth):
-        game=GAME(board=game.mat)
+        game=GAME(board=game.mat,score=game.score)
         if depth>2*self.depth:
-            return self.heuristic(game.mat)
+            return self.heuristic(game.mat,game.score)
         steps={i:0 for i in game.get_applicable_actions()}
         if len(game.get_applicable_actions())==0:
             return 0
@@ -80,11 +80,17 @@ class expectimax_solver:
         return np.mean(list(empty_tiles.values()))
 
 if __name__=='__main__':
-    # a=expectimax_solver(heuristic=heuristic.weighted_heuristic(np.array([[1,2,3,4],[8,7,6,5],[9,10,11,12],[16,15,14,13]])),game=GAME(board=np.array([[2,0,0,0],[2,0,0,0],[0,0,0,0],[0,0,0,0]])))
-    lst=[]
     from tqdm import tqdm
-    for i in tqdm(range(20)):
-        a=expectimax_solver(heuristic=heuristic.Heuristic.empty,depth=2)
-        lst.append(a.solve()[1])
-    print(np.median(lst))
-    print(np.mean(lst))
+    import pandas as pd
+    total_df=pd.DataFrame({'Configuration':[],'mean':[],'median':[],'max':[],'all_values':[]})
+    heuristics=[heuristic.Heuristic.greedy,heuristic.Heuristic.empty,heuristic.Heuristic.uniform,heuristic.Heuristic.monoton,weighted_heuristic(np.array([[1,2,3,4],[8,7,6,5],[9,10,11,12],[16,15,14,13]]))]
+    for depth in tqdm(range(1,5)):
+        for heuristic in tqdm(heuristics):
+            lst = []
+            for i in tqdm(range(30)):
+                b = expectimax_solver(heuristic=heuristic,depth=depth)
+                lst.append(b.solve()[1])
+            experiment=pd.DataFrame({'Configuration':[str(heuristic)+' '+str(depth)],'mean':[np.mean(lst)],'median':[np.median(lst)],'max':[np.max(lst)],'all_values':[[lst]]})
+            total_df=pd.concat([total_df,experiment])
+        total_df.to_csv('Expectimax_combination_scores.csv',index=False)
+        print('saved')

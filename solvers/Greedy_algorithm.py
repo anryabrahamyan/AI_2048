@@ -51,30 +51,16 @@ class Greedy:
                 else:
                     new_board.move_down()
 
-                # if new_board.get_current_state == WON:
-                #     return new_board.get_current_state
-
                 step[action] = heuristic(new_board.mat,new_board.score)
 
             i += 1
-            if len(set(step.values())) == len(step.keys()):
+            if len(set(step.values())) == len(step.keys()):#check if greatest
                 return max(step, key=step.get)
             else:
                 step = {i: value for i, value in step.items() if i == max(step, key=step.get)}
         action = self.heuristics[i](applicable_actions)
         return action
 
-        # perform each action and get a new game config
-        # value each config and save in steps
-        # if some equal then apply next heuristic
-        # repeat until random or not equal scores
-        # return action with the highest score or random
-
-    # def solve(self):
-    #     #search a step
-    #     #apply the step
-    #     #repeat until loss or win
-    #     #print the board and the score each time
 
 
 if __name__ == '__main__':
